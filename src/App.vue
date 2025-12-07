@@ -13,7 +13,7 @@ import { RouterView, RouterLink } from 'vue-router'
           class="nav-link"
           active-class="nav-link--active"
         >
-          Home
+          Inicio
         </RouterLink>
 
         <RouterLink
