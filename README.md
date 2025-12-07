@@ -1,8 +1,8 @@
-# Frontend – Final Programación 3 (Clientes)
+# Frontend - Final Programación 3
 
-[![Ver video de la funcionalidad en YouTube](https://img.youtube.com/vi/kj-1hmfLbr8/maxresdefault.jpg)](https://youtu.be/kj-1hmfLbr8)
+[![Ver video de la funcionalidad en YouTube](https://img.youtube.com/vi/_0WMXaPCJLg/maxresdefault.jpg)](https://www.youtube.com/watch?v=_0WMXaPCJLg)
 
-> 🎥 **Video de la demo completa:** https://youtu.be/kj-1hmfLbr8  
+> Video de la demo completa: https://www.youtube.com/watch?v=_0WMXaPCJLg
 
 ---
 
@@ -18,50 +18,17 @@ La API está desplegada en Render y este front se comunica contra esa API (o con
 
 ## Descripción del proyecto
 
-Este repositorio contiene el **frontend** del trabajo práctico final de Programación 3.
+Este repositorio contiene el **frontend** del trabajo práctico final de Programación 3. Es una SPA que consume la API de FastAPI y permite gestionar todo el flujo de e-commerce:
 
-Es una Single Page Application (SPA) muy simple que:
+- **Inicio:** KPIs de ventas/órdenes/facturas, alerta de stock bajo y gráfico de líneas (mes/año) con tooltips inmediatos para ver ventas por día/mes.
+- **Productos:** listado, alta y edición; gestión de categorías en modal (crear/editar/eliminar); popup para sumar stock; activación/inactivación con lista separada de inactivos; detalles editables y confirmación antes de borrar.
+- **Órdenes:** creación con selección de cliente y productos, validación de stock (bloquea si no hay suficiente), descuento %, total calculado automático, listado de más recientes a antiguas, detalle con productos y confirmación al eliminar.
+- **Facturas:** listado de más recientes a antiguas, muestra nombre de cliente y método de pago; detalle en modal con totales, descuento y productos de la orden.
+- **Clientes:** alta y edición; direcciones con alta/eliminación mediante modal con confirmación; listado de órdenes asociadas y mensajes claros cuando falta información.
 
-- Lista clientes obtenidos desde la API (`GET /clients`).
-- Permite **crear** nuevos clientes (`POST /clients`).
-- Permite **eliminar** clientes (`DELETE /clients/{id}`).
-- Muestra las **direcciones** asociadas a cada cliente (`addresses`) cuando el backend las devuelve.
-- Usa un **tema oscuro** pensado para ser cómodo a la vista (sin blancos puros).
-
-La idea del proyecto es demostrar:
-
-1. Consumo de una API REST real desplegada en la nube.
-2. Manejo básico de estado en el front (listado, alta y baja).
-3. Separación clara entre frontend y backend.
+La idea del proyecto es demostrar consumo de API REST real, manejo de estado (listado, alta, baja, edición) y separación clara entre frontend y backend.
 
 ---
 
 ## Tecnologías utilizadas
 
-- **Vue 3** con **Composition API**
-- **Vite** como bundler
-- **JavaScript** / ESNext
-- HTML + CSS plano (sin framework de UI adicional)
-
----
-
-## Requisitos
-
-- Node.js **>= 18** (recomendado)
-- npm (incluido con Node)
-
----
-
-## Configuración de entorno
-
-El front utiliza una variable de entorno para saber a qué API pegarle:
-
-- `VITE_API_BASE_URL` → URL base del backend
-
-Ejemplos de configuración:
-
-### Desarrollo contra backend local (Docker/local)
-
-```env
-# .env
-VITE_API_BASE_URL=http://localhost:8000
