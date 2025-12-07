@@ -126,145 +126,147 @@ onMounted(loadClient)
       Cargando cliente...
     </section>
 
-    <section v-else-if="client" class="detail-grid">
-      <!-- Datos del cliente -->
-      <article class="card">
-        <h3>Datos del cliente</h3>
-        <div class="kv">
-          <div class="kv-row">
-            <span class="kv-label">Nombre</span>
-            <span class="kv-value">{{ client.name }} {{ client.lastname }}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-label">Email</span>
-            <span class="kv-value">{{ client.email }}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-label">Teléfono</span>
-            <span class="kv-value">{{ client.telephone }}</span>
-          </div>
-          <div class="kv-row">
-            <span class="kv-label">ID interno</span>
-            <span class="kv-value">#{{ client.id_key }}</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Direcciones -->
-      <article class="card">
-        <header class="card-header">
-          <h3>Direcciones</h3>
-
-          <button
-            v-if="!showNewAddressForm"
-            class="btn btn-secondary btn-small"
-            @click="showNewAddressForm = true"
-          >
-            + Nueva dirección
-          </button>
-        </header>
-
-        <div v-if="showNewAddressForm" class="address-form-wrapper">
-          <AddressForm
-            :client-id="client.id_key"
-            @saved="handleAddressSaved"
-            @cancel="showNewAddressForm = false"
-          />
-        </div>
-
-        <p
-          v-if="!client.addresses || !Array.isArray(client.addresses) || !client.addresses.length"
-          class="empty"
-        >
-          Este cliente no tiene direcciones cargadas.
-        </p>
-
-        <ul
-          v-else
-          class="sub-list"
-        >
-          <li
-            v-for="addr in client.addresses"
-            :key="addr.id_key ?? addr.id ?? `${client.id_key}-addr-${addr.street}-${addr.number}`"
-            class="address-item"
-          >
-            <div>
-              <strong>{{ addr.street }} {{ addr.number }}</strong>
-              <span v-if="addr.city"> — {{ addr.city }}</span>
+    <template v-else-if="client">
+      <section class="detail-grid">
+        <!-- Datos del cliente -->
+        <article class="card">
+          <h3>Datos del cliente</h3>
+          <div class="kv">
+            <div class="kv-row">
+              <span class="kv-label">Nombre</span>
+              <span class="kv-value">{{ client.name }} {{ client.lastname }}</span>
             </div>
+            <div class="kv-row">
+              <span class="kv-label">Email</span>
+              <span class="kv-value">{{ client.email }}</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">Teléfono</span>
+              <span class="kv-value">{{ client.telephone }}</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">ID interno</span>
+              <span class="kv-value">#{{ client.id_key }}</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Direcciones -->
+        <article class="card">
+          <header class="card-header">
+            <h3>Direcciones</h3>
 
             <button
-              class="btn btn-danger btn-small"
-              @click="requestDeleteAddress(addr)"
-              :disabled="deletingAddressId === (addr.id_key ?? addr.id)"
+              v-if="!showNewAddressForm"
+              class="btn btn-secondary btn-small"
+              @click="showNewAddressForm = true"
             >
-              {{ deletingAddressId === (addr.id_key ?? addr.id) ? 'Eliminando...' : 'Eliminar' }}
+              + Nueva dirección
             </button>
-          </li>
-        </ul>
-      </article>
+          </header>
 
-      <!-- Órdenes -->
-      <article class="card">
-        <header class="card-header">
-          <h3>Órdenes</h3>
-          <!-- Más adelante: botón "Nueva orden" -->
-        </header>
+          <div v-if="showNewAddressForm" class="address-form-wrapper">
+            <AddressForm
+              :client-id="client.id_key"
+              @saved="handleAddressSaved"
+              @cancel="showNewAddressForm = false"
+            />
+          </div>
 
-        <p
-          v-if="!client.orders || !Array.isArray(client.orders) || !client.orders.length"
-          class="empty"
-        >
-          Este cliente no tiene órdenes registradas.
-        </p>
-
-        <ul
-          v-else
-          class="sub-list"
-        >
-          <li
-            v-for="order in client.orders"
-            :key="order.id_key ?? order.order_id ?? `${client.id_key}-order-${order}`"
+          <p
+            v-if="!client.addresses || !Array.isArray(client.addresses) || !client.addresses.length"
+            class="empty"
           >
-            Pedido
-            <strong>#{{ order.id_key ?? order.order_id ?? 's/n' }}</strong>
-            — Total:
-            {{ order.total ?? order.total_amount ?? 'N/D' }}
-            — Estado:
-            {{ order.status ?? order.state ?? 'N/D' }}
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <div
-      v-if="confirmDeleteAddressId !== null"
-      class="modal-backdrop"
-      @click.self="confirmDeleteAddressId = null"
-    >
-      <div class="modal">
-        <header class="modal-header">
-          <h3>Eliminar dirección</h3>
-          <button class="btn btn-secondary btn-small" @click="confirmDeleteAddressId = null">
-            Cancelar
-          </button>
-        </header>
-        <div class="modal-body">
-          <p class="hint">
-            Vas a eliminar:
-            <strong>{{ confirmDeleteAddressLabel || 'Esta dirección' }}</strong>
+            Este cliente no tiene direcciones cargadas.
           </p>
-          <div class="modal-actions">
-            <button class="btn btn-danger btn-small" @click="deleteAddress(confirmDeleteAddressId)">
-              Confirmar
-            </button>
+
+          <ul
+            v-else
+            class="sub-list"
+          >
+            <li
+              v-for="addr in client.addresses"
+              :key="addr.id_key ?? addr.id ?? `${client.id_key}-addr-${addr.street}-${addr.number}`"
+              class="address-item"
+            >
+              <div>
+                <strong>{{ addr.street }} {{ addr.number }}</strong>
+                <span v-if="addr.city"> — {{ addr.city }}</span>
+              </div>
+
+              <button
+                class="btn btn-danger btn-small"
+                @click="requestDeleteAddress(addr)"
+                :disabled="deletingAddressId === (addr.id_key ?? addr.id)"
+              >
+                {{ deletingAddressId === (addr.id_key ?? addr.id) ? 'Eliminando...' : 'Eliminar' }}
+              </button>
+            </li>
+          </ul>
+        </article>
+
+        <!-- Órdenes -->
+        <article class="card">
+          <header class="card-header">
+            <h3>Órdenes</h3>
+            <!-- Más adelante: botón "Nueva orden" -->
+          </header>
+
+          <p
+            v-if="!client.orders || !Array.isArray(client.orders) || !client.orders.length"
+            class="empty"
+          >
+            Este cliente no tiene órdenes registradas.
+          </p>
+
+          <ul
+            v-else
+            class="sub-list"
+          >
+            <li
+              v-for="order in client.orders"
+              :key="order.id_key ?? order.order_id ?? `${client.id_key}-order-${order}`"
+            >
+              Pedido
+              <strong>#{{ order.id_key ?? order.order_id ?? 's/n' }}</strong>
+              — Total:
+              {{ order.total ?? order.total_amount ?? 'N/D' }}
+              — Estado:
+              {{ order.status ?? order.state ?? 'N/D' }}
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <div
+        v-if="confirmDeleteAddressId !== null"
+        class="modal-backdrop"
+        @click.self="confirmDeleteAddressId = null"
+      >
+        <div class="modal">
+          <header class="modal-header">
+            <h3>Eliminar dirección</h3>
             <button class="btn btn-secondary btn-small" @click="confirmDeleteAddressId = null">
-              Volver
+              Cancelar
             </button>
+          </header>
+          <div class="modal-body">
+            <p class="hint">
+              Vas a eliminar:
+              <strong>{{ confirmDeleteAddressLabel || 'Esta dirección' }}</strong>
+            </p>
+            <div class="modal-actions">
+              <button class="btn btn-danger btn-small" @click="deleteAddress(confirmDeleteAddressId)">
+                Confirmar
+              </button>
+              <button class="btn btn-secondary btn-small" @click="confirmDeleteAddressId = null">
+                Volver
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
 
     <section v-else class="card">
       No se encontró el cliente.
