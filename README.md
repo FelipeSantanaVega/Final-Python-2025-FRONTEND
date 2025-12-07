@@ -30,5 +30,3 @@ La idea del proyecto es demostrar consumo de API REST real, manejo de estado (li
 
 ---
 
-## Tecnologías utilizadas
-
